@@ -1,0 +1,29 @@
+<scxml name="langsel" version="0.9"
+       xmlns="http://www.w3.org/2005/07/scxml"
+       xmlns:voice="http://pearmilk.com/scxml/voice">
+
+    <taglib src="voice.xml"/>
+
+    <initial>
+        <transition target="select"/>
+    </initial>
+
+    <state id="select">
+        <onentry>
+            <voice:say value="Please choose a language"/>
+            <voice:say value="Type 'say lang=en' for english, 'say lang=it' for italian"/>
+        </onentry>
+        <transition target="end" event="say" cond="params.lang == 'en' || params.lang == 'it'">
+            <assign location="lang" expr="params.lang"/>
+        </transition>
+        <transition target="select" event="say">
+            <voice:say value="Invalid language"/>
+        </transition>
+    </state>
+
+    <final id="end">
+        <onentry>
+            <voice:say expr=" 'Your language has been set to ' + this.lang"/>
+        </onentry>
+    </final>
+</scxml>

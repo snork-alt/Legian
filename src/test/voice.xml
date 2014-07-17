@@ -1,0 +1,7 @@
+<taglib namespace="voice">
+    <tag name="say" expr="undefined" value="">
+    <![CDATA[
+        out.println("Saying: " + (${expr} ? ${expr} : "${value}"));
+    ]]>
+    </tag>
+</taglib>

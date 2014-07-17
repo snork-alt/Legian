@@ -1,0 +1,19 @@
+<scxml name="reerrere" version="0.9" xmlns="http://www.w3.org/2005/07/scxml">
+
+   <initial>
+       <transition target="s1" event="1"/>
+   </initial>
+
+    <state id="s1">
+        <transition target="s2"/>
+    </state>
+
+    <state id="s2">
+
+    </state>
+
+    <final>
+
+    </final>
+
+</scxml>

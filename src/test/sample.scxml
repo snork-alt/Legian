@@ -1,0 +1,56 @@
+<scxml name="sample" version="0.9"
+       xmlns="http://www.w3.org/2005/07/scxml"
+       xmlns:voice="http://pearmilk.com/scxml/voice">
+
+    <taglib src="voice.xml"/>
+
+    <initial>
+        <onentry>
+            <voice:say value="Hello and welcome to the Legian sample IVR system"/>
+            <voice:say value="Please say your name. Type 'say name=[your name]'"/>
+            <script><![CDATA[
+                this.messages = [
+                    'first message', 'second message', 'third message'
+                ];
+            ]]></script>
+        </onentry>
+        <transition target="langsel" event="say">
+            <assign location="name" expr="params.name"/>
+        </transition>
+    </initial>
+
+    <state id="langsel">
+        <onentry>
+            <voice:say expr=" 'Ok ' + this.name + ', now we have to choose a language' "/>
+        </onentry>
+        <include src="langsel.scxml"/>
+        <transition target="listen" cond="this.messages.length != 0">
+            <voice:say expr=" 'You have ' + this.messages.length + ' messages' "/>
+            <assign location="currmsg" expr="0"/>
+        </transition>
+        <transition target="end">
+            <voice:say value="You have no messages"/>
+        </transition>
+    </state>
+
+    <state id="listen">
+        <onentry>
+            <voice:say expr=" 'Message ' + this.currmsg + ': ' + this.messages[this.currmsg] "/>
+            <voice:say value="Type next to go to the next message"/>
+        </onentry>
+        <transition event="next" target="listen" cond="this.currmsg &lt; (this.messages.length-1)">
+            <script><![CDATA[ this.currmsg++; ]]></script>
+        </transition>
+        <transition event="next" target="end">
+            <voice:say value="No more messages"/>
+        </transition>
+    </state>
+
+    <final id="end">
+        <onentry>
+            <voice:say value="Thanks. Bye Bye"/>
+        </onentry>
+    </final>
+
+
+</scxml>
